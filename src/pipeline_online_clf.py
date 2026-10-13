@@ -8,7 +8,7 @@ from src.classifier import OnlineLDA
 from src.metrics import OnlineMetrics
 from examples.train_offline import offline_trainer
 
-def online_training(stop_event):
+def online_classification(stop_event):
     streams = resolve_stream("type", "EEG_FEATURES")
     inlet = StreamInlet(streams[0])
 

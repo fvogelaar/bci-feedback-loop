@@ -7,7 +7,7 @@ from examples.train_offline import offline_trainer
 from simulated_eeg.streamer import stream
 from src.feature_publisher_F import publish_online_features
 from src.pipeline_feedback import closed_loop_fb
-from src.pipeline_online_clf import online_training
+from src.pipeline_online_clf import online_classification
 
 FIXATION_SECONDS = 2.0
 CUE_SECONDS = 1.0
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
     # intiate clf thread (this produces BCI_PREDICTION type stream)
     clf_thread = threading.Thread(
-            target=online_training,
+            target=online_classification,
             args=(stop_event,),
             kwargs={},
             )
