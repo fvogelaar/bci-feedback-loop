@@ -1,4 +1,4 @@
 pygame
-pylsl
+pylsl==1.16.2
 numpy
 scikit-learn
