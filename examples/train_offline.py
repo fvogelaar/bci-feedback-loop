@@ -12,21 +12,21 @@ def offline_trainer():
         features = extract_offline_features(
             in_path="data/xdf_files/francien_calibration.xdf",
             out_path="data/csv_files/calibration2.csv")
-        print("Labeled the features.")
+        #print("Labeled the features.")
 
         X,y = extract_y_labels(
             csv_path = "data/csv_files/calibration2.csv",
             in_path="data/xdf_files/francien_calibration.xdf")
-        print("Constructed X and y matrices")
+        #print("Constructed X and y matrices")
 
         clf = OnlineLDA()
         clf.train(X, y)
 
         if X is not None:
             clf.train(X, y)
-            print("LDA trained.")
+            # print("LDA trained.")
             cv = clf.evaluate_lda_cv(X, y)
-            print("Model evaluated.")
+           # print("Model evaluated.")
     except Exception as error:
         print(f"Could not load or train LDA: {error}")
     

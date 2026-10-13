@@ -89,8 +89,8 @@ def extract_offline_features(in_path, out_path):
     if eeg_data.shape[1] < N_CHANNELS:
         raise RuntimeError("The recorded stream has fewer than 8 channels.")
 
-    print(f"Selected EEG stream: {eeg_stream['info']['name'][0]}")
-    print(f"Recorded samples: {len(eeg_data)}")
+    # print(f"Selected EEG stream: {eeg_stream['info']['name'][0]}")
+    # print(f"Recorded samples: {len(eeg_data)}")
 
     window = SlidingWindow(
         size=WINDOW_SIZE,
@@ -133,7 +133,7 @@ def extract_offline_features(in_path, out_path):
 
                 feature_count += 1
 
-    print(f"Saved {feature_count} feature windows to {out_path}")
+    # print(f"Saved {feature_count} feature windows to {out_path}")
 
 
 def extract_y_labels(csv_path, in_path):
@@ -148,8 +148,8 @@ def extract_y_labels(csv_path, in_path):
     project_root = Path(__file__).resolve().parent.parent
     csv_path = project_root / csv_path
     in_path = project_root / in_path
-    print(csv_path)
-    print(in_path)
+    #print(csv_path)
+    #print(in_path)
 
     # If there is no previous recording, return
     if not os.path.exists(csv_path) or not os.path.exists(in_path):
@@ -184,7 +184,7 @@ def extract_y_labels(csv_path, in_path):
 
     marker_timestamps = np.array(marker_stream['time_stamps'])
 
-    print(f"Loaded Marker Stream: {len(marker_list)} markers found")
+    # print(f"Loaded Marker Stream: {len(marker_list)} markers found")
 
     # Loading features as previously calculated by the feature pipeline
     features = pd.read_csv(csv_path)
@@ -241,6 +241,6 @@ def extract_y_labels(csv_path, in_path):
     X = np.array(X)
     y = np.array(y)
 
-    print(f"Training data: {len(y)} feature windows")
+    # print(f"Training data: {len(y)} feature windows")
 
     return X, y

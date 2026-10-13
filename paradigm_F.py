@@ -6,6 +6,8 @@ import threading
 from examples.train_offline import offline_trainer
 from simulated_eeg.streamer import stream
 from src.feature_publisher_F import publish_online_features
+from src.pipeline_feedback import closed_loop_fb
+from src.pipeline_online_clf import online_training
 
 FIXATION_SECONDS = 2.0
 CUE_SECONDS = 1.0
@@ -84,9 +86,9 @@ if __name__ == '__main__':
     # Turn on streamer if simulating eeg
     #stream(stop_event)
 
-    # Turn on feature streaming 
+    # Turn on feature streaming (EEG_FEATURES type stream)
     # based on the stream you want
-    # Non-blocking feature streaming using threading
+    # Non-blocking implementation using threading
     feature_thread = threading.Thread(
         target=publish_online_features,
         args=(stop_event,),
@@ -94,6 +96,23 @@ if __name__ == '__main__':
         )
     feature_thread.start()
 
+    # intiate clf thread (this produces BCI_PREDICTION type stream)
+    clf_thread = threading.Thread(
+            target=online_training,
+            args=(stop_event,),
+            kwargs={},
+            )
+    
+    clf_thread.start()
+
+    feedback_thread = threading.Thread(
+                target=closed_loop_fb,
+                args=(stop_event,),
+                kwargs={},
+                )
+        
+    feedback_thread.start()
+    
     # Start experiment.
     try:
         run_motor_imagery_paradigm(
