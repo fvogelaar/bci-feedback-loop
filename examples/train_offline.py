@@ -7,7 +7,6 @@ from src.dataset import extract_offline_features, extract_y_labels  # alternativ
 
 
 def offline_trainer():
-    # out_path may not exist yet, so make it:
 
     try:
         features = extract_offline_features(
@@ -30,6 +29,9 @@ def offline_trainer():
             print("Model evaluated.")
     except Exception as error:
         print(f"Could not load or train LDA: {error}")
+    
+    return clf
+
 
 if __name__ == "__main__":
     offline_trainer()
