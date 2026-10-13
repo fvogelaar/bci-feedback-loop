@@ -17,7 +17,13 @@ class OnlineLDA:
     def predict(self, x):
         if not self.trained:
             return None
-        return int(self.model.predict([x])[0])
+       
+        label = self.model.predict([x])[0]
+        label_to_id = {
+            "LEFT": 0,
+            "RIGHT": 1,}
+
+        return label_to_id[label]
 
     # Addition: crossvalidation
     def evaluate_lda_cv(self, X, y, n_splits=5, random_state=42):
