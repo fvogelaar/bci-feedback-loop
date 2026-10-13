@@ -244,4 +244,3 @@ def extract_y_labels(csv_path, in_path):
     print(f"Training data: {len(y)} feature windows")
 
     return X, y
-
