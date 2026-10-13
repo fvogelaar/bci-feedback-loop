@@ -20,7 +20,7 @@ class OnlineLDA:
         return int(self.model.predict([x])[0])
 
     # Addition: crossvalidation
-    def evaluate_lda_cv(X, y, n_splits=5, random_state=42):
+    def evaluate_lda_cv(self, X, y, n_splits=5, random_state=42):
         model = self.model
         # cross validation setup for class balance
         cv = StratifiedKFold(
