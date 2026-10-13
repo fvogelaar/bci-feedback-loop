@@ -13,6 +13,7 @@ from pylsl import (
 
 from src.window import SlidingWindow
 from src.bandpower import BandPower
+from src.filters import OnlineBandpass
 
 
 FS = 250
@@ -75,9 +76,10 @@ def publish_online_features(stop_event, simulation):
 
     feature_outlet = StreamOutlet(feature_info) # OUTLET = features
 
-    print(f"Selected EEG stream: {eeg_stream.name()}")
-    print(f"Publishing {feature_info.channel_count()} channels"
-          f" to stream of type {feature_info.type()}")
+    # Uncomment for debugging
+    # print(f"Selected EEG stream: {eeg_stream.name()}")
+    # print(f"Publishing {feature_info.channel_count()} channels"
+          # f" to stream of type {feature_info.type()}")
 
     # initiate windowing
     window = SlidingWindow(
@@ -87,6 +89,9 @@ def publish_online_features(stop_event, simulation):
 
     # set bandpower settings, here 8-12 Hz
     feature = BandPower(fs=FS, band=(8, 12))
+
+    # initiate online filter
+    online_filter = OnlineBandpass(fs, 8, 30, N_CHANNELS)
 
     try:
         while not stop_event.is_set():
@@ -102,9 +107,11 @@ def publish_online_features(stop_event, simulation):
                 eeg_sample[:N_CHANNELS],
                 dtype=float,
             )
-
+            # apply online filter
+            filtered_sample = online_filter.process(sample)
+        
             # Populate the window with the sample. 
-            win = window.update(sample)
+            win = window.update(filtered_sample)
 
             if win is not None:
                 feats = feature.compute(win)

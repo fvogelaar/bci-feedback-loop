@@ -112,7 +112,8 @@ if __name__ == '__main__':
                 )
         
     feedback_thread.start()
-    
+
+    time.sleep(7)
     # Start experiment.
     try:
         run_motor_imagery_paradigm(

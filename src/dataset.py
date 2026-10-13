@@ -30,6 +30,7 @@ import numpy as np
 import pyxdf
 from src.window import SlidingWindow
 from src.bandpower import BandPower
+from src.filters import OnlineBandpass
 import pandas as pd
 import os
 from pathlib import Path
@@ -91,6 +92,13 @@ def extract_offline_features(in_path, out_path):
 
     # print(f"Selected EEG stream: {eeg_stream['info']['name'][0]}")
     # print(f"Recorded samples: {len(eeg_data)}")
+    
+    # online filtering
+    eeg_data = eeg_data[:, :N_CHANNELS]     # reshape to delete the 9th channel
+    online_filter = OnlineBandpass(fs, 8, 30, N_CHANNELS)
+    filtered_eeg = np.zeros_like(eeg_data)
+    for i, sample in enumerate(eeg_data):
+        filtered_eeg[i] = online_filter.process(sample)
 
     window = SlidingWindow(
         size=WINDOW_SIZE,
@@ -112,8 +120,8 @@ def extract_offline_features(in_path, out_path):
 
         # Process recorded samples instead of pulling live samples.
         # Per - window implementation.
-        for i in range(len(eeg_data)):
-            sample = eeg_data[i][:N_CHANNELS]   # excludes the 9th channel
+        for i in range(len(filtered_eeg)):
+            sample = filtered_eeg[i][:N_CHANNELS]   # excludes the 9th channel
             timestamp = eeg_timestamps[i]
 
             win = window.update(sample)
