@@ -92,7 +92,7 @@ if __name__ == '__main__':
     feature_thread = threading.Thread(
         target=publish_online_features,
         args=(stop_event,),
-        kwargs={"simulation": False},
+        kwargs={"simulation": True},
         )
     feature_thread.start()
 

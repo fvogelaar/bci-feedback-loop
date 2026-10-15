@@ -12,7 +12,7 @@ def closed_loop_fb(stop_event):
     inlet = StreamInlet(streams[0])
 
     feedback = VisualBar()
-    controller = Controller(smoothing=0.99)     #high smoothing value to prevent bar draining quickly
+    controller = Controller(smoothing=0.5)     #high smoothing value to prevent bar draining quickly
     clock = pygame.time.Clock()
     latest_y = None
 
