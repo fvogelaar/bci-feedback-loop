@@ -39,8 +39,8 @@ def online_classification(stop_event):
             
             if y is not None:
                 metrics.log_latency(t0)
-                # print("Prediction:", y,
-                #    "Mean latency:", metrics.mean_latency())
+                print("Prediction:", y,
+                    "Mean latency:", metrics.mean_latency())
     
     finally:
         inlet.close_stream()

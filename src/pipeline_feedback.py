@@ -27,7 +27,7 @@ def closed_loop_fb(stop_event):
 
             while True:
                 pred, _ = inlet.pull_sample(timeout=0.0)
-
+                
                 if pred is None:
                     break
 
@@ -37,9 +37,12 @@ def closed_loop_fb(stop_event):
                 value = controller.update(latest_y)
             else:
                 value = controller.state
+                
             feedback.update(value)
             # 60 frames per second
-            clock.tick(60)
+            
+            clock.tick(20)
+
             
     finally:
         inlet.close_stream()

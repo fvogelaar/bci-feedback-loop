@@ -56,20 +56,18 @@ def extract_offline_features(in_path, out_path):
         dejitter_timestamps=False
     )
 
-    eeg_stream = None
-
     # Search for the eeg stream in the XDF.
     for stream in streams:
         stream_name = stream['info']['name'][0]
 
-        if stream_name == 'UnicornRecorderLSLStream':
+        if stream_name == 'UnicornRecorderLSLStream' or stream_name == 'MatthijsEnFrancien':
             eeg_stream = stream
             # stop searching when you encounter the eeg stream
             break
 
     if eeg_stream is None:
         raise RuntimeError(
-            "UnicornRecorderLSLStream not found in the XDF."
+            "UnicornRecorderLSLStream or MatthijsEnFrancien not found in the XDF."
         )
 
     eeg_data = np.array(

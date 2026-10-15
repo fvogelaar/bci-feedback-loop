@@ -35,7 +35,7 @@ def publish_online_features(stop_event, simulation):
         # for all connected streams, find the first one called
         # UnicornRecorderLSLStream
         for stream in streams:
-            if stream.name() == "UnicornRecorderLSLStream":
+            if stream.name() == "UnicornRecorderLSLStream" or stream.name() == "MatthijsEnFrancien":
                 eeg_stream = stream
                 break
     else:
@@ -47,7 +47,7 @@ def publish_online_features(stop_event, simulation):
 
     if eeg_stream is None:
         raise RuntimeError(
-            "UnicornRecorderLSLStream not found."
+            "UnicornRecorderLSLStream or MatthijsEnFrancien not found."
         )
 
     fs = eeg_stream.nominal_srate()
